@@ -8,14 +8,11 @@ var db = low('db.json');
 
 router.get('/', function(req, res) {
 
-  // Read db
-  db.read();
-
-  // Response all compress documents
+  // Response all descompress documents
   res.json(db.get('compress').value());
 });
 
-/* POST compress html */
+/* POST descompress html */
 router.post('/', function(req, res) {
 
   // Html source
@@ -24,7 +21,7 @@ router.post('/', function(req, res) {
   // Clean html
   var clean = sanitizeHtml(html, {
     transformTags: {
-      'div': 'p',
+      'div': 'd',
       'img': 'i',
       'script': function(tagName, attribs) {
         return {

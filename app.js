@@ -9,6 +9,7 @@ var db = low('db.json');
 db.defaults({ compress: [], descompress: [] }).value();
 
 var compress = require('./routes/compress');
+var descompress = require('./routes/descompress');
 
 var app = express();
 
@@ -17,5 +18,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/compress', compress);
+app.use('/descompress', descompress);
 
 module.exports = app;
