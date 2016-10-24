@@ -2,6 +2,11 @@ var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+var low = require('lowdb');
+
+// Create database
+var db = low('db.json');
+db.defaults({ compress: [], descompress: [] }).value();
 
 var compress = require('./routes/compress');
 

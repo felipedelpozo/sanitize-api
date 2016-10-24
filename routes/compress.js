@@ -1,11 +1,27 @@
 var express = require('express');
 var router = express.Router();
+var low = require('lowdb');
+var uuid = require('uuid');
 var sanitizeHtml = require('sanitize-html');
+
+var db = low('db.json');
+
+router.get('/', function(req, res) {
+
+  // Read db
+  db.read();
+
+  // Response all compress documents
+  res.json(db.get('compress').value());
+});
 
 /* POST compress html */
 router.post('/', function(req, res) {
 
+  // Html source
   var html = req.body.html;
+
+  // Clean html
   var clean = sanitizeHtml(html, {
     transformTags: {
       'div': 'p',
@@ -21,7 +37,14 @@ router.post('/', function(req, res) {
     selfClosing: [ 'i' ]
   });
 
-  res.json({ source: html, clean: clean });
+  // Create document object
+  var document = { id: uuid(), source: html, clean: clean };
+
+  // Save document to compress collection
+  db.get('compress').push(document).value();
+
+  // Return document
+  res.json(document);
 });
 
 module.exports = router;
